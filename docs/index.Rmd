@@ -10,7 +10,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r leaflet_map, echo=FALSE, message=FALSE, fig.align='center', comment="", fig.show='hold'}
+```{r leaflet_map, echo=FALSE, message=FALSE, fig.align='center', comment="", fig.show='hold', fig.cap="Populations shown are estimates based on 2017 data from each school's admission report."}
 library(leaflet)
 library(dplyr)
 
@@ -31,7 +31,7 @@ popups <- paste(sep = "<br/>",
 # create the map
 ubelt_map <- university_belt %>%
   subset(select = c("lat", "lng")) %>%
-  leaflet() %>%
+  leaflet(width="100%") %>%
   addProviderTiles("CartoDB.Positron") %>%
   addMarkers(icon = icons, popup = popups)
 
