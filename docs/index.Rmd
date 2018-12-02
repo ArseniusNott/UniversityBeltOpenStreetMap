@@ -1,0 +1,45 @@
+---
+title: "Higher Education Institutions Located in the University Belt, Manila, Philippines"
+subtitle: "Located in Sampaloc, Quiapo, Santa Cruz, Santa Mesa, and San Miguel"
+author: "Alexander N. Villasoto"
+date: "Created on: December 3, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r leaflet_map, echo=FALSE, message=FALSE, fig.align='center', comment="", fig.show='hold'}
+library(leaflet)
+library(dplyr)
+
+# load data
+university_belt <- read.csv("./ubelt.csv", header = TRUE, sep = ",")
+
+# create icons for individual Universities
+icons <- icons(iconUrl = university_belt$ico, 
+                         iconWidth = 50, iconHeight = 50,
+                         iconAnchorX = 25, iconAnchorY = 25)
+
+# create popups for individual Universities
+popups <- paste(sep = "<br/>",
+                paste("<b>", "<a href='", university_belt$url, "' target='_blank'>", 
+                      university_belt$university_name, "</a></b>"),
+                paste("Student Population: ", university_belt$population))
+
+# create the map
+ubelt_map <- university_belt %>%
+  subset(select = c("lat", "lng")) %>%
+  leaflet() %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addMarkers(icon = icons, popup = popups)
+
+# show the map
+ubelt_map
+```
+
+## Reference:
+
+[University Belt: From Wikipedia, the free encyclopedia](https://en.wikipedia.org/wiki/University_Belt).
+
